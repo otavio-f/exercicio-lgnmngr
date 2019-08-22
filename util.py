@@ -15,7 +15,7 @@ class link(object):
 	
 	@id.setter
 	def id(self, id_num):
-		"""Altera o id do link"""
+		"""Altera o id do link."""
 		if id_num is None:
 			'''None: novo item'''
 			self._id = None
@@ -134,5 +134,5 @@ class control(object):
 		self.db.delete_one_by_id(link_instance.id)
 
 	def quit(self):
-		"""Finaliza as transações com a base de dados."""
+		"""Encerra a conexão com a base de dados."""
 		self.db.commit_and_close()
