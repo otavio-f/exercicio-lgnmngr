@@ -3,7 +3,7 @@ import tkinter
 from util import link, control
 
 class edit_view(tkinter.Toplevel):
-	"""classe view do editor de links"""
+	"""Classe view do editor de links."""
 	def __init__(self, link_instance):
 		"""Inicializa a classe com a instância de link."""
 		tkinter.Toplevel.__init__(self)
@@ -129,7 +129,7 @@ class main_view(tkinter.Tk):
 
 	@property
 	def active_link(self):
-		'''Retorna o link equivalente a selecao na interface.'''
+		"""Retorna o link equivalente a selecao na interface."""
 		index = self.listbox.curselection()[0]
 		return self.link_list[index]
 
