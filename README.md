@@ -3,9 +3,9 @@
 Consiste em um "password manager" simples, cujo objetivo é armazenar, alterar e copiar para a área de transferência dados necessários para o acesso online.
 
 Usa as seguintes bibliotecas (módulos):
-- tkinter;
-- sqlite3;
-- os;
+- tkinter
+- sqlite3
+- os
 
 Este projeto foi feito com a finalidade de **praticar conceitos** de:
 - Python 3;
