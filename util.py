@@ -108,3 +108,31 @@ class database(object):
 		self._cursor.execute("DROP TABLE links;")
 		self._cursor.execute("VACUUM;")
 		self.initialize()
+
+
+class control(object):
+	"""Classe responsável pela interface entre a view e a base de dados."""
+	def __init__(self, db_file):
+		"""Inicia uma conexão com uma base de dados contida no arquivo."""
+		self.db = database(db_file)
+
+	@property
+	def all(self):
+		"""Retorna todos os elementos contidos na base de dados."""
+		return self.db.get_all()
+
+	def one(self, id):
+		"""Retorna um elemento cujo id corresponda ao informado."""
+		return self.db.get_one_by_id(id)
+	
+	def save(self, link_instance):
+		"""Salva uma instância na base de dados."""
+		self.db.add_or_replace_one(link_instance)
+
+	def delete(self, link_instance):
+		"""Remove uma instância da base de dados."""
+		self.db.delete_one_by_id(link_instance.id)
+
+	def quit(self):
+		"""Finaliza as transações com a base de dados."""
+		self.db.commit_and_close()

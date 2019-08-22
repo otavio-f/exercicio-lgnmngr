@@ -1,33 +1,6 @@
 import os
 import tkinter
-from util import link, database
-
-class control(object):
-	"""Classe responsável pela interface entre a view e a base de dados."""
-	def __init__(self, db_file):
-		"""Inicia uma conexão com uma base de dados contida no arquivo."""
-		self.db = database(db_file)
-
-	@property
-	def all(self):
-		"""Retorna todos os elementos contidos na base de dados."""
-		return self.db.get_all()
-
-	def one(self, id):
-		"""Retorna um elemento cujo id corresponda ao informado."""
-		return self.db.get_one_by_id(id)
-	
-	def save(self, link_instance):
-		"""Salva uma instância na base de dados."""
-		self.db.add_or_replace_one(link_instance)
-
-	def delete(self, link_instance):
-		"""Remove uma instância da base de dados."""
-		self.db.delete_one_by_id(link_instance.id)
-
-	def quit(self):
-		"""Finaliza as transações com a base de dados."""
-		self.db.commit_and_close()
+from util import link, control
 
 class edit_view(tkinter.Toplevel):
 	"""classe view do editor de links"""
@@ -65,12 +38,16 @@ class edit_view(tkinter.Toplevel):
 		self.login_entry.set(self.link.user)
 		self.password_entry.set(self.link.password)
 		self.description_entry.set(self.link.description)
+		'''labels'''
+		tkinter.Label(self.main_frame, text="Nome").grid(row=0, column=0, sticky=tkinter.W)
+		tkinter.Label(self.main_frame, text="Usuário").grid(row=1, column=0, sticky=tkinter.W)
+		tkinter.Label(self.main_frame, text="Senha").grid(row=2, column=0, sticky=tkinter.W)
+		tkinter.Label(self.main_frame, text="Descrição").grid(row=3, column=0, sticky=tkinter.W)
 		'''entradas'''
-		tkinter.Label(self.main_frame, text="Nome")
-		tkinter.Entry(self.main_frame, textvariable=self.name_entry).pack()
-		tkinter.Entry(self.main_frame, textvariable=self.login_entry).pack()
-		tkinter.Entry(self.main_frame, show="*", textvariable=self.password_entry).pack()
-		tkinter.Entry(self.main_frame, textvariable=self.description_entry).pack()
+		tkinter.Entry(self.main_frame, textvariable=self.name_entry).grid(row=0, column=1, sticky=tkinter.W)
+		tkinter.Entry(self.main_frame, textvariable=self.login_entry).grid(row=1, column=1, sticky=tkinter.W)
+		tkinter.Entry(self.main_frame, show="*", textvariable=self.password_entry).grid(row=2, column=1, sticky=tkinter.W)
+		tkinter.Entry(self.main_frame, textvariable=self.description_entry).grid(row=3, column=1, sticky=tkinter.W)
 		'''empacotar no frame principal'''
 		self.main_frame.pack(side=tkinter.LEFT)
 
@@ -159,8 +136,9 @@ class main_view(tkinter.Tk):
 	def new(self):
 		"""Cria e salva um novo item."""
 		editpanel = edit_view(link())
-		self.control.save(editpanel.link)
-		self.refresh()
+		if editpanel.has_changes:
+			self.control.save(editpanel.link)
+			self.refresh()
 
 	def edit(self):
 		"""Edita um item."""
