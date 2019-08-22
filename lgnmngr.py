@@ -102,14 +102,15 @@ class main_view(tkinter.Tk):
 		'''clique duplo'''
 		self.listbox.bind("<Double-Button-1>", lambda f:self.edit())
 		'''empacotar'''
-		self.listbox.pack(fill=tkinter.BOTH)
-		self.main_frame.pack(side=tkinter.LEFT, fill=tkinter.BOTH)
+		self.listbox.pack(fill=tkinter.BOTH, expand=1)
+		self.main_frame.pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=1)
 
 	def toolbar_config(self):
 		"""Configura a barra de ferramentas e ações de janela e teclado."""
 		'''icones dos botoes (iconsdb)'''
 		self.ico_new = tkinter.PhotoImage(file=os.path.join("icons","add.gif"))
 		self.ico_edit = tkinter.PhotoImage(file=os.path.join("icons", "edit.gif"))
+		self.ico_delete = tkinter.PhotoImage(file=os.path.join("icons", "delete.gif"))
 		self.ico_login = tkinter.PhotoImage(file=os.path.join("icons", "login.gif"))
 		self.ico_password = tkinter.PhotoImage(file=os.path.join("icons", "password.gif"))
 		'''botoes'''
@@ -118,10 +119,12 @@ class main_view(tkinter.Tk):
 		if len(self.listbox.curselection())>0:
 			#tkinter.Button(self.toolbar, text="Editar", command=self.edit).pack()
 			tkinter.Button(self.toolbar, image=self.ico_edit, command=self.edit).pack()
+			tkinter.Button(self.toolbar, image=self.ico_delete, command=self.delete).pack()
 			tkinter.Button(self.toolbar, image=self.ico_login, command=self.copy_login).pack()
 			tkinter.Button(self.toolbar, image=self.ico_password, command=self.copy_pass).pack()
 		else:
 			tkinter.Button(self.toolbar, image=self.ico_edit, state=tkinter.DISABLED).pack()
+			tkinter.Button(self.toolbar, image=self.ico_delete, state=tkinter.DISABLED).pack()
 			tkinter.Button(self.toolbar, image=self.ico_login, state=tkinter.DISABLED).pack()
 			tkinter.Button(self.toolbar, image=self.ico_password, state=tkinter.DISABLED).pack()
 		'''empacotar'''
@@ -147,6 +150,11 @@ class main_view(tkinter.Tk):
 			'''if has changed, then save it'''
 			self.control.save(editpanel.link)
 			self.refresh()
+
+	def delete(self):
+		"""Remove um item."""
+		self.control.delete(self.active_link)
+		self.refresh()
 
 	def copy_login(self):
 		"""Copia o login do item selecionado para a área de transferência."""
